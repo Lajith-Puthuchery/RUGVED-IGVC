@@ -16,26 +16,27 @@ while cap.isOpened():
     blue[:,:,2] = 0
     red[:,:,0] = 0
     red[:,:,1] = 0
-    blue_blur = cv.GaussianBlur(blue,(5,5),0)
-    red_blur = cv.GaussianBlur(red,(3,3),0)
+    blue_blur = cv.GaussianBlur(blue,(5,5),3)
+    red_blur = cv.GaussianBlur(red,(5,5),0)
     ret,thresh_red = cv.threshold(red_blur,127,255,cv.THRESH_BINARY)
-    ret2,thresh_blue = cv.threshold(blue_blur,120,255,cv.THRESH_BINARY)
-    blue_dilation = cv.dilate(thresh_blue,(5,5),iterations = 1)
-    edges = cv.Canny( blue_dilation,0,200)
+    ret2,thresh_blue = cv.threshold(blue_blur,100,200,cv.THRESH_BINARY)
+    blue_dilation = cv.dilate(thresh_blue,(9,9),iterations = 2)
+    edges = cv.Canny( blue_dilation,100,150)
     #edges = np.int8(edges)
     edges = edges.astype(np.uint8)
     cv.imshow('frame', gray)
     cv.imshow('threshold_Red', thresh_red)
     cv.imshow('threshold_blue', thresh_blue)
     cv.imshow('dilation_red', edges) 
+    cv.imshow('Canny', edges)
 
-    lines = cv.HoughLinesP(edges,1,np.pi/180,100,minLineLength=100,maxLineGap=10)
+    lines = cv.HoughLinesP(edges,1,np.pi/180,15,minLineLength=20,maxLineGap=20)
     for line in lines:
         for x1,y1,x2,y2 in line:
-            cv2.line(line_image,(x1,y1),(x2,y2),(255,0,0),3)
+            cv.line(frame,(x1,y1),(x2,y2),(255,0,0),3)
 
-    lines_edges = cv2.addWeighted(frame, 0.8, line_image, 1, 0)
-    cv2.imshow("Lane",lines_edges)
+    lines_edges = cv.addWeighted(frame, 0.8, frame, 1, 0)
+    cv.imshow("Lane",lines_edges)
     if cv.waitKey(3) == ord('q'):
         break
 
