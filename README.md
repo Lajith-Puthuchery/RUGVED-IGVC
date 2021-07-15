@@ -7,4 +7,6 @@
 ##### 5.Applied a third thresholded in order to remove noise
 ##### 6.Applied canny and HoughP
 
-Used this method as it helped reduce noise without needing to apply any blurring or morphological functions
+Used this method as it helped reduce noise without needing to apply any blurring or morphological functions.
+The major noise is coming from the cones which i havent removed and the stones on the ground.
+
